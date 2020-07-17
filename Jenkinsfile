@@ -33,7 +33,7 @@ node
    {
 
    }
-   stage('Deploy app to test Infrastructure and Configure Creds')
+   stage('Deploy app to Infrastructure and Configure Creds')
    {
 
    }

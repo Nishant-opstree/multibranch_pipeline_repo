@@ -10,7 +10,7 @@ node
    def application_role_name = 'attendence_deploy_role'
    def storage_app_role_name = 'mysql_role'
    def storage_app_instance_tag = 'test_mysql'
-   
+   def application_instance_tag = 'test_attendance'
    if ( """${create_infra}""" == true)
    {
       stage ('Confirmation to start the Job')

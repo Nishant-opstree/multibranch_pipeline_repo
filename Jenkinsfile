@@ -5,15 +5,15 @@ node
    def configFilePath = input message: 'Enter Configration Path', parameters: [string(defaultValue: '/home/ubuntu/confFile.properties', description: '', name: 'configFilePath', trim: true)]
    def props = readProperties  file: """${configFilePath}"""
    def create_infra = input message: '', parameters: [booleanParam(defaultValue: false, description: 'Check the if box you wish to create infrastructure for the job first', name: 'create_infra')]
-   def application_name = 'attendance'
-   def application_role_name = 'attendence_deploy_role'
-   def application_instance_tag = 'test_attendance'
-   def application_initiate_yaml = 'deploy_attendance.yml'
+   def application_name = 'gateway'
+   def application_role_name = 'gateway_role'
+   def application_instance_tag = 'test_gateway'
+   def application_initiate_yaml = 'deploy_gateway.yml'
    if ( """${create_infra}""" == true)
    {
       stage ('Confirmation to start the Job')
       {
-         build 'ci_infra/infra_test_attendance'
+         build 'ci_infra/infra_test_gateway'
 	   }
    }
    stage('Clone src code')
@@ -30,7 +30,7 @@ node
    {
       try
       {
-         echo "Updating attendance_deploy_role"
+         echo "Updating gateway_role"
          sh '''attendance_ip=$(python dynamic-inventory.py test_attendance) 
          sed -i "/attendance:8081/s/attendance/${attendance_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml
          employee_ip=$(python dynamic-inventory.py test_employee) 

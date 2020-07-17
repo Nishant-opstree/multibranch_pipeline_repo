@@ -52,10 +52,10 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      deploy_role ('deploy_attendance.yml', prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      deploy_role ("""${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
       if ( """${create_infra}""" == true )
       {
-         deploy_role ('deploy_mysql.yml', prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+         deploy_role ("""${storage_app_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
       }
    }
    stage('Test Application')
@@ -65,7 +65,7 @@ node
    stage('start CD job')
    {
       echo """Build ${application_name} CD Job"""
-      build job: '/cd_multibranch/prod_attendance', propagate: false, wait: false
+      build job: '/cd_pipeline/prod_attendance', propagate: false, wait: false
    }
 
 }

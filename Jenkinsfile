@@ -35,9 +35,9 @@ node
       try
       {
          echo "Updating attendance_deploy_role"
-         sh """python dynamic-inventory.py \${storage_app_instance_tag}"""
-         sh """mysql_ip=\$(python dynamic-inventory.py \${storage_app_instance_tag}) ;
-         sed -i "/host:/s|${storage_app_name}|${mysql_ip}|" ${application_role_name}/files/${application_name}/config.yaml"""
+         sh """python dynamic-inventory.py ${storage_app_instance_tag}"""
+         //sh """mysql_ip=\$(python dynamic-inventory.py \${storage_app_instance_tag}) ;
+         //sed -i "/host:/s|${storage_app_name}|${mysql_ip}|" ${application_role_name}/files/${application_name}/config.yaml"""
       }
       catch (err)
       {

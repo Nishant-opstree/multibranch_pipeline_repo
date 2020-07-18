@@ -64,7 +64,7 @@ node
    stage('start CD job')
    {
       echo """Build ${application_name} CD Job"""
-      build job: '/cd_pipeline/prod_attendance', propagate: false, wait: false
+      build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test'), string(name: 'branch', value: 'test_attendance')]
    }
 
 }

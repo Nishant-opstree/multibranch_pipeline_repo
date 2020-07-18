@@ -1,11 +1,10 @@
-def call(String inventory_name, String key_path, String DEVELOPEREMAIL, String SLACKCHANNELDEVELOPER)
+def call(String instance_tag, String inventory_name, String key_path, String DEVELOPEREMAIL, String SLACKCHANNELDEVELOPER)
 {
     try
     {
         echo "Deploying Attendance and mysql code"
-        sh """
-            bash create_inventory.sh test_attendance ${key_path}
-            ansible-playbook -i inventory ${inventory_name}
+        sh """bash create_inventory.sh ${instance_tag} ${key_path}"""
+        sh""" ansible-playbook -i inventory ${inventory_name}
             rm inventory
         """
     }

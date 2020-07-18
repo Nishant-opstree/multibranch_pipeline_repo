@@ -17,7 +17,7 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build 'ci_infra/infra_test_employee'
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'prod'), string(name: 'branch', value: 'prod_employee')]
 	   }
    }
    stage('Clone src code')

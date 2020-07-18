@@ -18,7 +18,7 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build 'ci_infra/infra_test_employee'
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test'), string(name: 'branch', value: 'test_employee')]
 	   }
    }
    stage('Clone src code')
@@ -65,7 +65,7 @@ node
    stage('start CD job')
    {
       echo """Build ${application_name} CD Job"""
-      build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test'), string(name: 'branch', value: 'test_employy')]
+      build job: '/cd_pipeline/prod_employee', propagate: false, wait: false
    }
 
 }

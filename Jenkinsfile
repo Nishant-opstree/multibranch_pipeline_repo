@@ -36,7 +36,7 @@ node
       {
          echo "Updating attendance_deploy_role"
          def mysql_ip = sh (script:"""python dynamic-inventory.py ${storage_app_instance_tag}""", returnStdout: true).trim()
-         sh """sed -i "/host:/s|${storage_app_name}|${mysql_ip}|" ${application_role_name}/files/${application_name}/config.yaml"""
+         sh """sed -i "/host:/s/${storage_app_name}/${mysql_ip}/" ${application_role_name}/files/${application_name}/config.yaml"""
       }
       catch (err)
       {

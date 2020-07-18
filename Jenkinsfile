@@ -13,7 +13,7 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build 'ci_infra/infra_test_webserver'
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'prod'), string(name: 'branch', value: 'prod_webserver')]
 	   }
    }
    stage('Clone src code')

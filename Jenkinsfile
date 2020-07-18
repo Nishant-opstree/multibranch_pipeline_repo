@@ -53,6 +53,7 @@ node
    {
       echo "1"
       deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      echo "22"
       if ( """${create_infra}""" == true )
       {
          echo "2"

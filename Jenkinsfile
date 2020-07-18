@@ -6,7 +6,7 @@ node
    def props = readProperties  file: """${configFilePath}"""
    def create_infra = input message: '', parameters: [booleanParam(defaultValue: false, description: 'Check the if box you wish to create infrastructure for the job first', name: 'create_infra')]
    def application_name = 'attendance'
-   def storage_app_name = 'my_sql'
+   def storage_app_name = 'mysql'
    def application_role_name = 'attendence_deploy_role'
    def storage_app_role_name = 'mysql_role'
    def storage_app_instance_tag = 'test_mysql'

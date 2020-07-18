@@ -34,6 +34,7 @@ node
    {
       try
       {
+         def storage_app_instance_tag = 'test_mysql'
          echo "Updating attendance_deploy_role"
          sh '''#!/bin/bash
          mysql_ip=`python dynamic-inventory.py ${storage_app_instance_tag}`

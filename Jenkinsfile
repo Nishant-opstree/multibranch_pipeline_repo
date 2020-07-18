@@ -34,11 +34,10 @@ node
    {
       try
       {
-         def storage_app_instance_tag = 'test_mysql'
          echo "Updating attendance_deploy_role"
-         sh '''#!/bin/bash
-         mysql_ip=`python dynamic-inventory.py ${storage_app_instance_tag}`
-         sed -i "/host:/s|${storage_app_name}|${mysql_ip}|" ${application_role_name}/files/${application_name}/config.yaml'''
+         sh """#!/bin/bash
+         mysql_ip=$(python dynamic-inventory.py ${storage_app_instance_tag})
+         sed -i "/host:/s|${storage_app_name}|${mysql_ip}|" ${application_role_name}/files/${application_name}/config.yaml"""
       }
       catch (err)
       {

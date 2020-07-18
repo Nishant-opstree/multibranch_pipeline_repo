@@ -51,10 +51,10 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      deploy_role ("""${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
       if ( """${create_infra}""" == true )
       {
-         deploy_role ("""${storage_app_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+         deploy_role ("""${storage_app_instance_tag}""", """${storage_app_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
       }
    }
    stage('Test Application')

@@ -51,7 +51,8 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      echo "1"
+      def k = prop['KEY_PATH']
+      echo "${k}"
       deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", prop['KEY_PATH'], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
       echo "22"
       if ( """${create_infra}""" == true )

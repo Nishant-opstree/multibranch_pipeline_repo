@@ -32,8 +32,8 @@ node
       try
       {
          echo "Updating frontend_role"
-         sh '''gateway_ip=$(python dynamic-inventory.py ${gateway_instance_tag}) 
-         sed -i "/REACT_APP_GATEWAY_URL:/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env'''
+         def gateway_ip = sh (script:"""python dynamic-inventory.py ${gateway_instance_tag}""", returnStdout: true).trim()
+         sh """sed -i "/REACT_APP_GATEWAY_URL:/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env"""
       }
       catch (err)
       {
@@ -48,7 +48,7 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      deploy_role ("""${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", props['KEY_PATH'], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
    }
    stage('Test Application')
    {

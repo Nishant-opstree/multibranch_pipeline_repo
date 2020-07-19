@@ -13,7 +13,7 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'prod'), string(name: 'branch', value: 'prod_gateway')]
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'prod')]
 	   }
    }
    stage('Clone src code')
@@ -31,12 +31,12 @@ node
       try
       {
          echo "Updating gateway_role"
-         sh '''attendance_ip=$(python dynamic-inventory.py attendance) 
-         sed -i "/attendance:8081/s/attendance/${attendance_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml
-         employee_ip=$(python dynamic-inventory.py employee) 
-         sed -i "/employee:8083/s/employee/${employee_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml
-         salary_ip=$(python dynamic-inventory.py salary) 
-         sed -i "/salary:8082/s/salary/${salary_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml'''
+         def attendance_ip = sh (script:"""python dynamic-inventory.py attendance""", returnStdout: true).trim()
+         sh """sed -i "/attendance:8081/s/attendance/${attendance_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml"""
+         def employee_ip = sh (script:"""python dynamic-inventory.py employee""", returnStdout: true).trim()
+         sh """sed -i "/employee:8083/s/employee/${employee_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml"""
+         def salary_ip = sh (script:"""python dynamic-inventory.py salary""", returnStdout: true).trim() 
+         sh """sed -i "/salary:8082/s/salary/${salary_ip}/" ${application_role_name}/files/${application_name}/src/main/resources/application.yml"""
       }
       catch (err)
       {
@@ -51,7 +51,7 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      deploy_role ("""${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", props['KEY_PATH'], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
    }
    stage('Test Application')
    {

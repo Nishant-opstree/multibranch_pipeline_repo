@@ -27,6 +27,7 @@ node
    {
       def gitUrl = "https://github.com/Nishant-opstree/roles.git"
       manage_role.clone ("""${gitUrl}""", """${application_role_name}""", """${application_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
+      sh """cp ${application_name}_src/.env ${role_name}/files/${application_name}/"""
    }
    stage('Update role')
    {

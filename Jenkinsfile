@@ -11,7 +11,7 @@ node
    def storage_app_role_name = 'elasticsearch_role'
    def storage_app_instance_tag = 'test_elasticsearch'
    def application_instance_tag = 'test_employee'
-   def application_initiate_yaml = 'deploy_attendance.yml'
+   def application_initiate_yaml = 'deploy_employee.yml'
    def storage_app_initiate_yaml = 'deploy_elasticsearch.yml'
    if ( """${create_infra}""" == true)
    {

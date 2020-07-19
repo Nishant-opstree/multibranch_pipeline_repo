@@ -13,7 +13,7 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test'), string(name: 'branch', value: 'test_webserver')]
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test')]
 	   }
    }
    stage('Clone src code')
@@ -31,11 +31,10 @@ node
       try
       {
          echo "Updating webserver_role"
-         sh '''frontend_ip=$(python dynamic-inventory.py test_frontend) 
-         sed -i "/frontend:5000/s/frontend/${frontend_ip}/" ${application_role_name}/files/${application_name}/nginx.conf
-         gateway_ip=$(python dynamic-inventory.py test_gateway) 
-         sed -i "/gateway:8080/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/nginx.conf
-         '''
+         def frontend_ip = sh (script:"""python dynamic-inventory.py test_frontend""", returnStdout: true).trim()
+         sh """sed -i "/frontend:5000/s/frontend/${frontend_ip}/" ${application_role_name}/files/${application_name}/nginx.conf """
+         def gateway_ip = sh (script:"""python dynamic-inventory.py test_gateway""", returnStdout: true).trim()
+         sh """sed -i "/gateway:8080/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/nginx.conf"""
       }
       catch (err)
       {

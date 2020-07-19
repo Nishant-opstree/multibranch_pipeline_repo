@@ -2,7 +2,7 @@ def call(String instance_tag, String inventory_name, String key_path, String DEV
 {
     try
     {
-        echo "Deploying Attendance and mysql code"
+        echo "Deploying code"
         sh """ bash create_inventory.sh ${instance_tag} ${key_path}"""
         sh """ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i inventory ${inventory_name} """
         sh """ rm inventory """

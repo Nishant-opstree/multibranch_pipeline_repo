@@ -21,7 +21,9 @@ node
    {
       def gitUrl = "https://github.com/Nishant-opstree/ot-microservices.git" 
       clone_src_code ( """${gitUrl}""", """${application_name}""" , props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      sh    
    }
+   input message: '', parameters: [booleanParam(defaultValue: false, description: 'Check the if box you wish to create infrastructure for the job first', name: 'stop')]
    stage('Clone role')
    {
       def gitUrl = "https://github.com/Nishant-opstree/roles.git"

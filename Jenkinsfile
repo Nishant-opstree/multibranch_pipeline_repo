@@ -35,7 +35,7 @@ node
       {
          echo "Updating frontend_role"
          def gateway_ip = sh (script:"""python dynamic-inventory.py ${gateway_instance_tag}""", returnStdout: true).trim()
-         sh """sed -i "/REACT_APP_GATEWAY_URL:/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env"""
+         sh """sed -i "/REACT_APP_GATEWAY_URL/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env"""
       }
       catch (err)
       {

@@ -14,26 +14,28 @@ node
    {
       stage ('Confirmation to start the Job')
       {
-         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'prod'), string(name: 'branch', value: 'prod_frontend')]
+         build job: 'infrastructure_pipeline', parameters: [string(name: 'environment', value: 'test')]
 	   }
    }
    stage('Clone src code')
    {
       def gitUrl = "https://github.com/Nishant-opstree/ot-microservices.git" 
       clone_src_code ( """${gitUrl}""", """${application_name}""" , props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      sh """cp ${application_name}/.env ${application_name}_src/"""
    }
    stage('Clone role')
    {
       def gitUrl = "https://github.com/Nishant-opstree/roles.git"
       manage_role.clone ("""${gitUrl}""", """${application_role_name}""", """${application_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
+      sh """cp frontend_src/.env frontend_role/files/frontend/"""
    }
    stage('Update role')
    {
       try
       {
          echo "Updating frontend_role"
-         sh '''gateway_ip=$(python dynamic-inventory.py ${gateway_instance_tag}) 
-         sed -i "/REACT_APP_GATEWAY_URL:/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env'''
+         def gateway_ip = sh (script:"""python dynamic-inventory.py ${gateway_instance_tag}""", returnStdout: true).trim()
+         sh """sed -i "/REACT_APP_GATEWAY_URL/s/gateway/${gateway_ip}/" ${application_role_name}/files/${application_name}/.env"""
       }
       catch (err)
       {
@@ -48,7 +50,7 @@ node
    }
    stage('Deploy app to Infrastructure and Configure Creds')
    {
-      deploy_role ("""${application_initiate_yaml}""", prop[KEY_PATH], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
+      deploy_role ("""${application_instance_tag}""", """${application_initiate_yaml}""", props['KEY_PATH'], props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'] )
    }
    stage('Test Application')
    {

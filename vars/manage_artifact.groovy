@@ -19,8 +19,6 @@ def artifact_pull(String application_name, String bucket_name, String DEVELOPERE
     try
     {
         echo "Show options new artifact to s3"
-        node {
-    stage('Preparation') {
      input message: '', parameters: [extendedChoice(bindings: '', defaultValue: '', description: '', descriptionPropertyValue: '', groovyClasspath: '', groovyScript: """def sout = new StringBuilder(), serr = new StringBuilder()
 def proc = \'aws s3 ls s3://${bucket_name}/${application_name}/\'.execute()
 proc.consumeProcessOutput(sout, serr)
@@ -38,8 +36,6 @@ cleanValues.each {  "${it}".toString();
 parameters.remove(parameters.size() - 1);
 parameters.add(last)
 parameters""", multiSelectDelimiter: ',', name: '', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 5)]
-    }
-}
 
         sh """sudo rm -r ${application_name}_src/*"""
         sh """aws s3 sync s3://${bucket_name}/${application_name}/${artifact_name} ${application_name}_src"""

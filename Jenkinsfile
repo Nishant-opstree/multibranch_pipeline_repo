@@ -13,6 +13,7 @@ node
    def application_instance_tag = 'test_attendance'
    def application_initiate_yaml = 'deploy_attendance.yml'
    def storage_app_initiate_yaml = 'deploy_mysql.yml'
+   def bucket_name = 'nishant-terraform-test-artifact'
    if ( """${create_infra}""" == true)
    {
       stage ('Confirmation to start the Job')
@@ -28,6 +29,8 @@ node
    stage('Clone role')
    {
       def gitUrl = "https://github.com/Nishant-opstree/roles.git"
+      manage_artifact.artifact_push ("""${application_name}""","""${bucket_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
+      manage_artifact.artifact_pull ("""${application_name}""","""${bucket_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
       manage_role.clone ("""${gitUrl}""", """${application_role_name}""", """${application_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
    }
    stage('Update role')

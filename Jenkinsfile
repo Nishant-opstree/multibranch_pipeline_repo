@@ -66,7 +66,7 @@ node
    stage('start CD job')
    {
       echo """Build ${application_name} CD Job"""
-      build job: '/cd_pipeline/prod_frontend', propagate: false, wait: false
+      build job: '/cd_pipeline/prod_attendance', propagate: false, wait: false
    }
 
 }

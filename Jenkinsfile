@@ -13,6 +13,7 @@ node
    def application_instance_tag = 'test_employee'
    def application_initiate_yaml = 'deploy_employee.yml'
    def storage_app_initiate_yaml = 'deploy_elasticsearch.yml'
+   def bucket_name = 'nishant-terraform-test-artifact'
    if ( """${create_infra}""" == true)
    {
       stage ('Confirmation to start the Job')

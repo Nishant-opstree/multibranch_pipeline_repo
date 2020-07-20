@@ -19,8 +19,10 @@ def artifact_pull(String application_name, String bucket_name, String DEVELOPERE
     try
     {
         echo "Show options new artifact to s3"
-        def artifact_name_list_temp = sh (script:"""aws s3 ls s3://"${bucket_name}"/"${application_name}" """, returnStdout: true).trim()
-        def artifact_name_list = sh (script:""" echo ${artifact_name_list} | awk '{printf "%s",$2}' | sed 's|/|,|g'""", returnStdout: true).trim()
+        sh """
+        echo "#!/bin/bash ; art_list=`aws s3 ls s3://"${bucket_name}"/"${application_name}" | awk '{printf "%s",$2}' | sed 's|/|,|g'`; echo ${art_list}" > script.sh
+        """
+        def artifact_name_list = sh (script:"""bash script.sh""", returnStdout: true).trim()
         input message: '', parameters: [extendedChoice(description: '', multiSelectDelimiter: '/', name: '', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', value: """${artifact_name_list}""", visibleItemCount: 5)]
         sh """sudo rm -r ${application_name}_src/*"""
         sh """aws s3 sync s3://${bucket_name}/${application_name}/${artifact_name} ${application_name}_src"""

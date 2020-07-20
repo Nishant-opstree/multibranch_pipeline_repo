@@ -30,7 +30,6 @@ node
    {
       def gitUrl = "https://github.com/Nishant-opstree/roles.git"
       manage_artifact.artifact_push ("""${application_name}""","""${bucket_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
-      manage_artifact.artifact_pull ("""${application_name}""","""${bucket_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
       manage_role.clone ("""${gitUrl}""", """${application_role_name}""", """${application_name}""", props['DEVELOPEREMAIL'], props['SLACKCHANNELDEVELOPER'])
    }
    stage('Update role')

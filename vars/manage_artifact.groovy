@@ -19,8 +19,8 @@ def artifact_pull(String application_name, String bucket_name, String DEVELOPERE
     try
     {
         echo "Show options new artifact to s3"
-     input message: '', parameters: [extendedChoice(bindings: '', defaultValue: '', description: '', descriptionPropertyValue: '', groovyClasspath: '', groovyScript: """def sout = new StringBuilder(), serr = new StringBuilder()
-def proc = \'aws s3 ls s3://${bucket_name}/${application_name}/\'.execute()
+     input message: '', parameters: [extendedChoice(bindings: '', defaultValue: '', description: '', descriptionPropertyValue: '', groovyClasspath: '', groovyScript: '''def sout = new StringBuilder(), serr = new StringBuilder()
+def proc = \'aws s3 ls s3://"${bucket_name}"/"${application_name}"/\'.execute()
 proc.consumeProcessOutput(sout, serr)
 proc.waitForOrKill(2000)
 def values = "$sout".split(\'/\')
@@ -35,14 +35,14 @@ cleanValues.each {  "${it}".toString();
                  }
 parameters.remove(parameters.size() - 1);
 parameters.add(last)
-parameters""", multiSelectDelimiter: ',', name: '', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 5)]
+parameters''', multiSelectDelimiter: ',', name: '', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 5)]
 
         sh """sudo rm -r ${application_name}_src/*"""
         sh """aws s3 sync s3://${bucket_name}/${application_name}/${artifact_name} ${application_name}_src"""
     }
     catch (err)
     {
-        emailext attachLog: true, body: 'Build-URL: "${BUILD_URL}"', subject: """${inventory_name} Was Not able get executed""", to: """{DEVELOPEREMAIL}"""
+        emailext attachLog: true, body: 'Build-URL: "${BUILD_URL}"', subject: """Was Not able get executed""", to: """{DEVELOPEREMAIL}"""
         //slackSend channel: """${SLACKCHANNELDEVELOPER}""", message: 'The code Was Not able get deployed Build-URL: "${BUILD_URL}" '
         sh "exit 1"
     }
